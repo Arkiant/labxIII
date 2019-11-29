@@ -7,14 +7,17 @@ Crear un chatbot con DialogFlow que tenga interpretación de lenguaje natural y 
 ## Primeros pasos
 
 - Tener instalado Golang 1.13 https://golang.org/dl/
-- Tener instalado insomnia
-- Tener instalado visual code u otro editor o IDE para golang
-- Tener una cuenta en DialogFlow
+- Tener instalado insomnia https://insomnia.rest/
+- Tener instalado visual code u otro editor o IDE para golang https://code.visualstudio.com/
+- Tener una cuenta en DialogFlow https://dialogflow.cloud.google.com/#/login
 - Webhook:
     - URL
     - Basic AUTH
     - Headers
     - https://cloud.google.com/dialogflow/docs/fulfillment-overview
+- Docs de interés:
+    - https://cloud.google.com/dialogflow/docs/fulfillment-how
+    - 
 
 ## Arquitectura
 <img src="./arquitectura.png">
@@ -50,6 +53,6 @@ Mediante lenguaje natural le diremos a Google nuestros datos necesarios para pod
 
 ## Objetivo
 
-El objetivo principal es poder enseñar el producto estrella de travelgateX, hotelX, utilizando nuevas tecnologías haciendo mención al principal objetivo de la empresa que es innovación. Par ello, vamos a programar el webhook con golang utilizando buenas prácticas, creando tests, interfaces para abstraernos de la API y como es hotelX, mucho humor.
+El objetivo principal es poder enseñar el producto de travelgateX, hotelX, utilizando nuevas tecnologías haciendo mención al principal objetivo de la empresa que es la innovación. Para ello, vamos a programar el webhook con golang utilizando buenas prácticas, creando tests, interfaces para abstraernos de la API y como es hotelX, con mucho humor.
 
 
