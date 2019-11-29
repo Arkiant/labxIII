@@ -1,4 +1,4 @@
-# labxIII
+# Labx III
 3th edition LabX travelgate
 
 ## Descripción
@@ -41,10 +41,11 @@ Intentará descifrar fechas y lugar y obtener la opción mas barata que tenga di
 
 #### Parámetros necesarios
 
-- fecha de inicio
-- fecha final
-- personas
-- lugar
+- Fecha de inicio
+- Fecha de fin
+- Días de estancia
+- Personas
+- Lugar
 
 ### Book
 Mediante lenguaje natural le diremos a Google nuestros datos necesarios para poder realizar una reserva, crearemos con todos los datos una petición a book y crearemos una reserva, de la cual le daremos al usuario el código de reserva.
