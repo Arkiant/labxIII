@@ -1,6 +1,9 @@
 # Labx III
 3th edition LabX travelgate
 
+## Título
+HotelX con flow y asistentes de voz
+
 ## Descripción
 Crear un chatbot con DialogFlow que tenga interpretación de lenguaje natural y poder hacer una reserva a hotelX
 
@@ -17,7 +20,6 @@ Crear un chatbot con DialogFlow que tenga interpretación de lenguaje natural y 
     - https://cloud.google.com/dialogflow/docs/fulfillment-overview
 - Docs de interés:
     - https://cloud.google.com/dialogflow/docs/fulfillment-how
-    - 
 
 ## Arquitectura
 <img src="./arquitectura.png">
