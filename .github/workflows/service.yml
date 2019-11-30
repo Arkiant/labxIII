@@ -32,7 +32,7 @@ jobs:
     - name: Docker Hub 
       uses: manusa/actions-publish-docker@master
       with:
-        name: ${{ env.REGISTRY_NAME }}/${{ REGISTRY_BUILD_NAME }}
+        name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
         tag: latest
