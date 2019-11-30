@@ -6,13 +6,13 @@ env:
   REGISTRY_NAME: acrlabx
   REGISTRY_BUILD_NAME: labxwebhook
   WORKING_DIRECTORY: ./src/webhook/
-  NAMESPACE: 78d4c2ffdefc4bd3b64a.westeurope.aksapp.io
+  NAMESPACE: kube-system
 
 jobs:
   test:
     strategy:
       matrix: 
-        go-version: [1.12, 1.13]
+        go-version: [1.13]
         platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
@@ -52,9 +52,9 @@ jobs:
           resource-group: 'LabX'
           cluster-name: 'AKSHotelX'
     
-    - run: kubectl get ns
     # Create namespace if doesn't exist
-    - run: |
+    - name: Create k8s namespace if doesn't exist
+      run: |
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
     
     - name: Create imagepullsecret for azurecr.io
