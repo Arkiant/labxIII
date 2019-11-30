@@ -7,8 +7,14 @@ type Criteria struct {
 	NumPaxes    int
 }
 
+
 type Response struct {
 	Errors []error
+}
+
+type DestinationSearcherResponse struct {
+	Code      string
+	Available bool
 }
 
 type SearchResponse struct {
