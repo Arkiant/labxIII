@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Arkiant/labxIII/src/webhook/pkg"
 	"log"
 	"net/http"
 	"os"
@@ -30,8 +31,8 @@ func main() {
 	)
 
 	router.Handle("/search",
-		search.NewSearchHandle(
-			&search.SearchService{},
+		pkg.NewRunnerHandle(
+			&search.SearchFactory{},
 		),
 	)
 	router.Handle("/book",
@@ -40,6 +41,6 @@ func main() {
 		),
 	)
 
-	log.Printf("Running!", port)
+	log.Printf("Running in port %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
