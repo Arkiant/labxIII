@@ -12,7 +12,7 @@ import (
 func (s *ServiceClient) Quote(c QuoteCriteria) (string, error) {
 
 	//ValidateRequest
-	if c.Text == "" || c.Access == "" || c.MaxSize == 0 {
+	if optionRefId==nil {
 		return "", fmt.Errorf("Error params")
 	}
 
