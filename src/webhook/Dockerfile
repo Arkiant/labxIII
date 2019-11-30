@@ -2,7 +2,7 @@
 # Build small image without code #
 ##################################
 
-FROM alpine:3.6
+FROM alpine:3.10
 WORKDIR /webhook
 
 # copy local "service" binary to docker.
