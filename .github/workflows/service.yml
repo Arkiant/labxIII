@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  REGISTRY_NAME: labxhx
+  REGISTRY_NAME: acrlabx
   REGISTRY_BUILD_NAME: labxwebhook
   WORKING_DIRECTORY: ./src/webhook/
 
