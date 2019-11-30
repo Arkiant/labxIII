@@ -1,0 +1,39 @@
+name: DialogCI
+
+on: 
+  pull_request:
+    branches:
+      - master
+env:
+  REGISTRY_NAME: arkiant
+  REGISTRY_BUILD_NAME: labxdialog
+  WORKING_DIRECTORY: ./src/dialog/
+
+jobs:
+  test:
+    strategy:
+      matrix: 
+        go-version: [1.13]
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - name: Install/Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Checkout code
+      uses: actions/checkout@v1
+    - name: Test
+      run: go test ./... -v
+    - name: Build
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: CGO_ENABLED=0 GOOS=linux go build -a -o dialog .
+
+    - name: Docker Hub 
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+        snapshot: true  
+        workdir: ${{ env.WORKING_DIRECTORY }}
