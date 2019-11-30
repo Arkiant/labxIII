@@ -10,12 +10,13 @@ import (
 type connector struct {
 	httpClient http.Client
 	url        string
+	auth       string
 }
 
 var _ Service = (*connector)(nil)
 
-func NewService(client http.Client, url string) Service {
-	return &connector{httpClient: client, url: url}
+func NewService(client http.Client, url, auth string) Service {
+	return &connector{httpClient: client, url: url, auth: auth}
 }
 
 func (c *connector) Post(ctx context.Context, body io.Reader) (io.ReadCloser, error) {
@@ -26,7 +27,7 @@ func (c *connector) Post(ctx context.Context, body io.Reader) (io.ReadCloser, er
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept-Encoding", "gzip")
-	req.Header.Set("Authorization", "Apikey 4a0bed9a-0ad0-4319-4c1f-0d681b829c14")
+	req.Header.Set("Authorization", c.auth)
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err

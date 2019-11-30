@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/Arkiant/labxIII/src/webhook/pkg"
 	"github.com/Arkiant/labxIII/src/webhook/transaction"
 	thttp "github.com/Arkiant/labxIII/src/webhook/transaction/http"
@@ -15,9 +16,20 @@ import (
 	"net/http"
 )
 
+var hXauth string
+
+func init() {
+	flag.StringVar(&hXauth, "auth", "", "the auth token to connect with hotelx")
+	flag.Parse()
+
+}
+
 const defaultPort = "8080"
 
 func main() {
+	if hXauth == "" {
+		panic("No auth token specified")
+	}
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
@@ -33,7 +45,7 @@ func main() {
 	)
 
 	cli := thttp.NewService(
-		http.Client{}, "https://api.travelgatex.com",
+		http.Client{}, "https://api.travelgatex.com", hXauth,
 	)
 	service := transaction.NewService(cli)
 
