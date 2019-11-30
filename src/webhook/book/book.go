@@ -1,12 +1,62 @@
 package book
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
+	"github.com/Arkiant/labxIII/src/webhook/pkg"
+	"github.com/Arkiant/labxIII/src/webhook/transaction"
+	"github.com/marstr/guid"
+	"github.com/travelgateX/go-io/log"
+	"io"
 )
 
-type BookService struct {
+type BookFactory struct {
+	Transactioner transaction.Service
 }
 
-func NewBookHandle(s *BookService) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+func (sf *BookFactory) NewRunner() pkg.Runner {
+	return &BookService{
+		transactioner: sf.Transactioner,
+	}
+}
+
+type BookService struct {
+	transactioner transaction.Service
+	rq            pkg.BookRQ
+}
+
+var _ pkg.Runner = (*BookService)(nil)
+
+func (s *BookService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
+	var err error
+	log.Debug("GetRequest")
+	s.rq, err = s.getRequest(bodyRQ)
+	if err != nil {
+		log.Error(err.Error())
+		return pkg.BookResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
+	}
+	bookrefID := guid.NewGUID().String()
+	BookRS, err := s.transactioner.Book(
+		transaction.BookCriteria{
+			OptionRefId:     s.rq,
+			ClientReference: bookrefID,
+		},
+	)
+	if err != nil {
+		log.Error(err.Error())
+		return pkg.BookResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
+	}
+
+	ret := pkg.BookResponse{
+		BookingID: bookrefID,
+		Status:    BookRS.Status,
+	}
+
+	return ret
+}
+
+func (s *BookService) getRequest(bodyRQ io.Reader) (pkg.BookRQ, error) {
+	ret := pkg.BookRQ{}
+	err := json.NewDecoder(bodyRQ).Decode(&ret)
+	return ret, err
 }

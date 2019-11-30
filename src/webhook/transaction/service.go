@@ -169,6 +169,7 @@ type Service interface {
 	Search(SearchCriteria) (SearchResponse, error)
 	DestinationSearcher(DestinationSearcherCriteria) (string, error)
 	Quote(QuoteRequest) (string, error)
+	Book(BookCriteria) (BookResponse, error)
 }
 
 type QuoteRequest struct {

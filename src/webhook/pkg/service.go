@@ -6,13 +6,15 @@ type Criteria struct {
 	Destination string
 	NumPaxes    int
 }
-
+type BookRQ struct {
+	OptionID string
+}
 
 type Response struct {
 	Errors []Error
 }
 type Error struct {
-	Code string
+	Code        string
 	Description string
 }
 
@@ -33,6 +35,7 @@ type SearchResponse struct {
 type BookResponse struct {
 	Response
 	BookingID string
+	Status    string
 }
 
 type Service interface {
