@@ -54,6 +54,7 @@ jobs:
     
     # Create namespace if doesn't exist
     - run: |
+        kubectl get namespaces
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
     
     - name: Create imagepullsecret for azurecr.io
