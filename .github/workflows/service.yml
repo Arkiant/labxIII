@@ -14,10 +14,11 @@ jobs:
     - name: Install/Go
       uses: actions/setup-go@v1
       with:
-        go-version: ${{ matrix.platform }}
+        go-version: ${{ matrix.go-version }}
     - name: Chackout code
       uses: actions/checkout@v1
     - name: Test
       run: go test ./... -v
     - name: Build
-      run: CGO_ENABLED=0 GOOS=linux go build -a
+      working-directory: ./src/webhook/
+      run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
