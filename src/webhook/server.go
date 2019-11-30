@@ -26,6 +26,7 @@ func init() {
 
 const defaultPort = "8080"
 
+
 func main() {
 	if hXauth == "" {
 		panic("No auth token specified")
