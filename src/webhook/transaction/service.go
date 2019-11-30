@@ -1,11 +1,12 @@
 package transaction
 
-type Service interface {
-	Search(Criteria) SearchResponse
-}
+import (
+	"github.com/Arkiant/labxIII/src/webhook/pkg"
+)
 
-type Criteria struct{}
-type SearchResponse struct{}
+type Service interface {
+	Search(pkg.Criteria) pkg.SearchResponse
+}
 
 var _ Service = (*ServiceClient)(nil)
 
