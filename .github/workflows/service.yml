@@ -1,8 +1,8 @@
 name: CI
 
-on: [push, pull_request]
-# branches:
-#   - master
+on: [pull_request]
+branches:
+  - master
 env:
   REGISTRY_NAME: arkiant
   REGISTRY_BUILD_NAME: labxwebhook
@@ -37,4 +37,3 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
         snapshot: true  
         workdir: ${{ env.WORKING_DIRECTORY }}
-        context: latest
