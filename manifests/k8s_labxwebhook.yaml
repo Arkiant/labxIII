@@ -6,37 +6,14 @@ spec:
   selector:
     matchLabels:
       app: azure-hotelx-flow
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 5 
+  replicas: 2 # indica al controlador que ejecute 2 pods
   template:
     metadata:
       labels:
         app: azure-hotelx-flow
     spec:
-      nodeSelector:
-        "bakshotelx-labx-7bfa6d-32a812e2.hcp.westeurope.azmk8s.io/nodepool1": linux
       containers:
       - name: azure-hotelx-flow
         image: acrlabx.azurecr.io/labxwebhook:latest
         ports:
         - containerPort: 80
-        resources:
-          requests:
-            cpu: 250m
-          limits:
-            cpu: 500m
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: azure-hotelx-flow
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-  selector:
-    app: azure-hotelx-flow
