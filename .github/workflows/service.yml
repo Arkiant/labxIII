@@ -30,8 +30,8 @@ jobs:
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
 
     - name: Docker Hub 
-      uses: manusa/actions-publish-docker@master
       working-directory: ${{ env.WORKING_DIRECTORY }}
+      uses: manusa/actions-publish-docker@master
       with:
         name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }} 
