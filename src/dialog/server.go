@@ -8,5 +8,5 @@ import (
 
 func main() {
 	r := routes.NewRoutes()
-	http.ListenAndServe(":5000", r)
+	http.ListenAndServe(":6969", r)
 }

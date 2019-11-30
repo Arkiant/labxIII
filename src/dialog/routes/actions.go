@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -66,7 +68,23 @@ func RequestHandler(w http.ResponseWriter, r *http.Request) {
 			criteria.Destination = values["destination"].Data().(string)
 			criteria.NumPaxes = int(values["pax"].Data().(float64))
 
-			//fmt.Println(criteria)
+			var response SearchResponse
+			var outputContext OutputContext
+
+			response.FulfillmentText = "Para " + criteria.Destination + " tenemos un puti a 100 euros"
+			outputContext.Name = "projects/hotelx-pjaswu/agent/sessions/55e8f133-bac9-542a-48e3-5574d9b30093/contexts/book"
+			outputContext.LifespanCount = 5
+			outputContext.Parameters.HotelName = "Hotel Prueba"
+			outputContext.Parameters.Price = "100 euros"
+			outputContext.Parameters.OptionID = 12345
+
+			response.OutputContexts = append(response.OutputContexts, outputContext)
+
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response)
+
+			fmt.Println(response)
 
 		}
 	}
