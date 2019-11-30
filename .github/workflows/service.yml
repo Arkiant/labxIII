@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go-version }}
-    - name: Chackout code
+    - name: Checkout code
       uses: actions/checkout@v1
     - name: Test
       run: go test ./... -v
