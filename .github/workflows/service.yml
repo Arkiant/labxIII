@@ -1,7 +1,9 @@
 name: CI
 
-on: [push, pull_request]
-
+on: 
+  pull_request:
+    branches:
+      - master
 env:
   REGISTRY_NAME: arkiant
   REGISTRY_BUILD_NAME: labxwebhook
@@ -28,18 +30,11 @@ jobs:
       working-directory: ${{ env.WORKING_DIRECTORY }}
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
 
-    - name: Docker set registry configuration 
-      uses: azure/docker-login@v1
+    - name: Docker Hub 
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        login-server: hub.docker.com
+        name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    
-    # Docker build and publish
-    - name: Docker build and publish
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: |
-        docker build . -t ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
-        docker push ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
-        docker build . -t ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}:latest
-        docker push ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}:latest
+        snapshot: true  
+        workdir: ${{ env.WORKING_DIRECTORY }}
