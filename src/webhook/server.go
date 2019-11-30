@@ -40,6 +40,6 @@ func main() {
 		),
 	)
 
-	log.Printf("Running!", port)
+	log.Printf("Running! %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
