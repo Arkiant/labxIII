@@ -57,8 +57,10 @@ func main() {
 		),
 	)
 	router.Handle("/book",
-		book.NewBookHandle(
-			&book.BookService{},
+		pkg.NewRunnerHandle(
+			&book.BookFactory{
+				Transactioner: service,
+			},
 		),
 	)
 

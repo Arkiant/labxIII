@@ -49,6 +49,7 @@ type HotelX struct {
 	Search              Search                `json:"search"`
 	DestinationSearcher []DestinationSearcher `json:"destinationSearcher"`
 	Quote               Quote                 `json:"quote"`
+	Book                Book                  `json:"book"`
 }
 type Data struct {
 	HotelX HotelX `json:"hotelX"`
@@ -107,51 +108,24 @@ type Settings struct {
 	Plugins           Plugins `json:"plugins"`
 }
 
-type BookResponse struct {
-	CancelPolicy BookCancelPolicy `json:"cancelPolicy"`
-	Price        BookPrice        `json:"price"`
-	Status       string           `json:"status"`
-	Reference    BookReference    `json:"reference"`
-	Holder       BookHolder       `json:"holder"`
-}
-
-type BookPrice struct {
-	Currency string `json:"currency"`
-	Gross    int    `json:"gross"`
-}
-
-type BookReference struct {
+type Reference struct {
 	Client string `json:"client"`
 }
-
-type BookHolder struct {
-	Name    string `json:"name"`
-	Surname string `json:"surname"`
+type Booking struct {
+	Status    string    `json:"status"`
+	Reference Reference `json:"reference"`
 }
-
-type BookErrors struct {
-	Code        string `json:"code"`
-	Type        string `json:"type"`
-	Description string `json:"description"`
-}
-
-type BookCancelPolicy struct {
-	Refundable      bool                `json:"refundable"`
-	CancelPenalties BookCancelPenalties `json:"cancelPenalties"`
-}
-
-type BookCancelPenalties struct {
-	HoursBefore int     `json:"hoursBefore"`
-	PenaltyType string  `json:"penaltyType"`
-	Currency    string  `json:"currency"`
-	Value       float32 `json:"value"`
+type Book struct {
+	Booking  Booking `json:"booking"`
+	Errors   []Error `json:"errors"`
+	Warnings []Error `json:"warnings"`
 }
 
 type Service interface {
 	Search(SearchCriteria) (SearchResponse, error)
 	DestinationSearcher(DestinationSearcherCriteria) (string, error)
 	Quote(QuoteRequest) (string, error)
-	Book(BookCriteria) (BookResponse, error)
+	Book(BookCriteria) (Booking, error)
 }
 
 type QuoteRequest struct {

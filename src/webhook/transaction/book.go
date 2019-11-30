@@ -9,9 +9,8 @@ import (
 	"io/ioutil"
 )
 
-func (s *ServiceClient) Book(c BookCriteria) (BookResponse, error) {
-
-	rs := BookResponse{}
+func (s *ServiceClient) Book(c BookCriteria) (Booking, error) {
+	rs := Booking{}
 
 	//ValidateRequest
 	if c.OptionRefID == "" {
@@ -19,9 +18,8 @@ func (s *ServiceClient) Book(c BookCriteria) (BookResponse, error) {
 	}
 
 	//buildRequest
-	requestString := fmt.Sprintf(`{{"query":"mutation ($input: HotelBookInput!, $settings: HotelSettingsInput) {\n  hotelX {\n    book(input: $input, settings: $settings) {\n      booking {\n        cancelPolicy {\n          refundable\n        }\n        price {\n          currency\n          gross\n        }\n        status\n        reference {\n          client\n        }\n        holder {\n          name\n          surname\n        }\n      }\n      errors {\n        code\n        type\n        description\n      }\n      warnings {\n        code\n        type\n        description\n      }\n    }\n  }\n}\n","variables":
-	{"input":{"optionRefId":"%s","clientReference":"%s,"deltaPrice":{"amount":10,"percent":10,"applyBoth":true},"holder":{"name":"Name1","surname":"Surname1"},"rooms":[{"occupancyRefId":1,"paxes":[{"name":"Name1","surname":"Surname1","age":18},{"name":"Name2","surname":"Surname2","age":30}]}]},"settings":{"context":"HOTELTEST","client":"labx","auditTransactions":true,"testMode":true,"plugins":{"step":"RESPONSE_OPTION","pluginsType":[{"type":"COMMISSION","name":"commissionX","parameters":[{"key":"default","value":"50"}]}]}}}}`, c.OptionRefID, c.ClientReference)
-
+	requestString := fmt.Sprintf(`{"query":"mutation ($input: HotelBookInput!, $settings: HotelSettingsInput) {\n  hotelX {\n    book(input: $input, settings: $settings) {\n      booking {\n        status\n        reference {\n          client\n        }\n      }\n      errors {\n        code\n        type\n        description\n      }\n      warnings {\n        code\n        type\n        description\n      }\n    }\n  }\n}\n","variables":{"input":{"optionRefId":"%s","clientReference":"%s","deltaPrice":{"amount":10,"percent":10,"applyBoth":true},"holder":{"name":"Name1","surname":"Surname1"},"rooms":[{"occupancyRefId":1,"paxes":[{"name":"Name1","surname":"Surname1","age":30},{"name":"Name2","surname":"Surname2","age":30}]}]},"settings":{"context":"HOTELTEST","client":"labx","auditTransactions":true,"testMode":true,"plugins":{"step":"RESPONSE_OPTION","pluginsType":[{"type":"COMMISSION","name":"commissionX","parameters":[{"key":"default","value":"50"}]}]}}}}`, c.OptionRefID, c.ClientReference)
+	println(requestString)
 	r := bytes.NewReader([]byte(requestString))
 
 	//Do call
@@ -51,13 +49,15 @@ func (s *ServiceClient) Book(c BookCriteria) (BookResponse, error) {
 		return rs, fmt.Errorf("Error ReadAll")
 	}
 
-	println(string(bodyResponse))
-
-	err = json.Unmarshal(bodyResponse, &rs)
+	hxrs := HotelxResponse{}
+	err = json.Unmarshal(bodyResponse, &hxrs)
 
 	if err != nil {
 		return rs, fmt.Errorf("Error Unmarshal")
 	}
+
+	rs.Status = hxrs.Data.HotelX.Book.Booking.Status
+	rs.Reference = hxrs.Data.HotelX.Book.Booking.Reference
 
 	return rs, nil
 

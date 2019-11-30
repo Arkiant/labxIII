@@ -38,7 +38,7 @@ func (s *BookService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
 	bookrefID := guid.NewGUID().String()
 	BookRS, err := s.transactioner.Book(
 		transaction.BookCriteria{
-			OptionRefId:     s.rq,
+			OptionRefID:     s.rq.OptionID,
 			ClientReference: bookrefID,
 		},
 	)

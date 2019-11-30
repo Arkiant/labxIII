@@ -11,7 +11,9 @@
             "mode": "auto",
             "program": "${env:GOPATH}/src/github.com/Arkiant/labxIII/src/webhook/server.go",
             "env": {},
-            "args": []
+            "args": [
+                "--auth=\"Apikey 10d1663f-7812-4fd6-680f-e90d865ef253\""
+            ]
         }
     ]
 }
