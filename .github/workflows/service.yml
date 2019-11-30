@@ -33,6 +33,7 @@ jobs:
         login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
-      run: |
+    
+    - run: |
         docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
         docker push ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
