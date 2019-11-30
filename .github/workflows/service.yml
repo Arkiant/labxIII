@@ -4,10 +4,11 @@ on: [push, pull_request]
 
 env:
   REGISTRY_NAME: labxhx
+  REGISTRY_BUILD_NAME: labxwebhook
+  WORKING_DIRECTORY: ./src/webhook/
 
 jobs:
   test:
-    working-directory: ./src/webhook/
     strategy:
       matrix: 
         go-version: [1.12, 1.13]
@@ -23,16 +24,19 @@ jobs:
     - name: Test
       run: go test ./... -v
     - name: Build
+      working-directory: ${{ env.WORKING_DIRECTORY }}
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
 
     # Docker build and publish
-    - name: Docker build and publish
+    - name: Docker set registry configuration 
       uses: azure/docker-login@v1
       with:
         login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
-    - run: |
-        docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
-        docker push ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
+    - name: Docker build and publish
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: |
+        docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
+        docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
