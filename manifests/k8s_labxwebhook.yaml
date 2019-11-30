@@ -1,8 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-hotelx-flow
+  name: azure-hotelx-flow-deployment
 spec:
+  selector:
+    matchLabels:
+      app: azure-hotelx-flow
   replicas: 1
   strategy:
     rollingUpdate:
@@ -14,7 +17,7 @@ spec:
       labels:
         app: azure-hotelx-flow
     spec:
-      nodeSelector: 
+      nodeSelector:
         "bakshotelx-labx-7bfa6d-32a812e2.hcp.westeurope.azmk8s.io/nodepool1": linux
       containers:
       - name: azure-hotelx-flow
