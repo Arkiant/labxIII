@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/Users/andreea/labxIII/integration/connector.go",
+            "program": "${env:GOPATH}/src/github.com/Arkiant/labxIII/src/webhook/server.go",
             "env": {},
             "args": []
         }

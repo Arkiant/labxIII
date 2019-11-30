@@ -2,7 +2,7 @@ package transaction
 
 import ()
 
-func (s *ServiceClient) Search(c Criteria) (SearchResponse, error) {
+func (s *ServiceClient) Search(c SearchCriteria) (SearchResponse, error) {
 
 	//ValidateRequest
 
@@ -14,5 +14,5 @@ func (s *ServiceClient) Search(c Criteria) (SearchResponse, error) {
 
 	//errors control
 
-	return SearchResponse{}, nil
+	return SearchResponse{Amount: 100, Currency: "EUR", HotelName: "QueDiseResorts", OptionID: "uno", Refundable: true}, nil
 }

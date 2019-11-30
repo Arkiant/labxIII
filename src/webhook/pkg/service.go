@@ -9,7 +9,11 @@ type Criteria struct {
 
 
 type Response struct {
-	Errors []error
+	Errors []Error
+}
+type Error struct {
+	Code string
+	Description string
 }
 
 type DestinationSearcherResponse struct {

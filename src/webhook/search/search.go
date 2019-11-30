@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/Arkiant/labxIII/src/webhook/pkg"
 	"github.com/Arkiant/labxIII/src/webhook/transaction"
+	"github.com/travelgateX/go-io/log"
 	"io"
 )
 
@@ -27,26 +28,44 @@ var _ pkg.Runner = (*SearchService)(nil)
 
 func (s *SearchService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
 	var err error
+	log.Debug("GetRequest")
 	s.rq, err = s.getRequest(bodyRQ)
 	if err != nil {
-		return pkg.SearchResponse{Response: pkg.Response{Errors: []error{err}}}
+		log.Error(err.Error())
+		return pkg.SearchResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
 	}
-	code, err := s.transactioner.DestinationSearcher(s.rq.Destination)
 
+	log.Debug("Send destination")
+	code, err := s.transactioner.DestinationSearcher(
+		transaction.DestinationSearcherCriteria{
+			Text:    s.rq.Destination,
+			MaxSize: 500,
+			Access:  "0",
+		},
+	)
+	if err != nil {
+		log.Error(err.Error())
+		return pkg.SearchResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
+	}
+	log.Debug("Send search with code: " + code)
 	searchRS, err := s.transactioner.Search(
-		transaction.Criteria{
+		transaction.SearchCriteria{
 			ChecOut:     s.rq.ChecOut,
-			Checkin:     s.rq.Checkin,
+			CheckIn:     s.rq.Checkin,
 			Destination: code,
 			NumPaxes:    s.rq.NumPaxes,
 		},
 	)
+	if err != nil {
+		log.Error(err.Error())
+		return pkg.SearchResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
+	}
 
 	return searchRS
 }
 
 func (s *SearchService) getRequest(bodyRQ io.Reader) (pkg.Criteria, error) {
 	ret := pkg.Criteria{}
-	err := json.NewDecoder(bodyRQ).Decode(ret)
+	err := json.NewDecoder(bodyRQ).Decode(&ret)
 	return ret, err
 }
