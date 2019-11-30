@@ -76,34 +76,16 @@ type SearchResponse struct {
 }
 
 type BookCriteria struct {
-	Input    Input    `json:"input"`
-	Settings Settings `json:"settings"`
+	OptionRefID     string `json:"optionRefId"`
+	ClientReference string `json:"clientReference"`
 }
-type DeltaPrice struct {
-	Amount    int  `json:"amount"`
-	Percent   int  `json:"percent"`
-	ApplyBoth bool `json:"applyBoth"`
-}
-type Holder struct {
-	Name    string `json:"name"`
-	Surname string `json:"surname"`
-}
+
 type Paxes struct {
 	Name    string `json:"name"`
 	Surname string `json:"surname"`
 	Age     int    `json:"age"`
 }
-type Rooms struct {
-	OccupancyRefID int     `json:"occupancyRefId"`
-	Paxes          []Paxes `json:"paxes"`
-}
-type Input struct {
-	OptionRefID     string     `json:"optionRefId"`
-	ClientReference string     `json:"clientReference"`
-	DeltaPrice      DeltaPrice `json:"deltaPrice"`
-	Holder          Holder     `json:"holder"`
-	Rooms           []Rooms    `json:"rooms"`
-}
+
 type Parameters struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
