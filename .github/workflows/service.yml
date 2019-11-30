@@ -30,10 +30,10 @@ jobs:
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
 
     - name: Docker Hub 
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      uses: manusa/actions-publish-docker@master
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
-        tag: latest
+        snapshot: true  
+        workdir: ${{ env.WORKING_DIRECTORY }}
