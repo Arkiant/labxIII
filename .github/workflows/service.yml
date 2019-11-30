@@ -20,4 +20,5 @@ jobs:
     - name: Test
       run: go test ./... -v
     - name: Build
-      run: ls -la && CGO_ENABLED=0 GOOS=linux go build -a -o service .
+      working-directory: ./src/webhook/
+      run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
