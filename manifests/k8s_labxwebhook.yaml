@@ -16,4 +16,4 @@ spec:
       - name: azure-hotelx-flow
         image: acrlabx.azurecr.io/labxwebhook:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8080
