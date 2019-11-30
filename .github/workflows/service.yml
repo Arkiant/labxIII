@@ -31,7 +31,7 @@ jobs:
     - name: Docker set registry configuration 
       uses: azure/docker-login@v1
       with:
-        login-server: docker.io
+        login-server: hub.docker.com
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
