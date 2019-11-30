@@ -2,6 +2,9 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  REGISTRY_NAME: labxhx
+
 jobs:
   test:
 
@@ -22,3 +25,14 @@ jobs:
     - name: Build
       working-directory: ./src/webhook/
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
+
+    # Docker build and publish
+    - name: Docker build and publish
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+      run: |
+        docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
+        docker push ${{ env.REGISTRY_NAME }}.azurecr.io/labxwebhook:${{ github.sha }}
