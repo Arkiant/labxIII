@@ -7,11 +7,21 @@ type Criteria struct {
 	NumPaxes    int
 }
 
+
 type Response struct {
-	Errors []error
+	Errors []Error
+}
+type Error struct {
+	Code string
+	Description string
 }
 
-type SearchRespone struct {
+type DestinationSearcherResponse struct {
+	Code      string
+	Available bool
+}
+
+type SearchResponse struct {
 	Response
 	OptionID   string
 	HotelName  string
@@ -26,6 +36,6 @@ type BookResponse struct {
 }
 
 type Service interface {
-	Search(input Criteria) SearchRespone
+	Search(input Criteria) SearchResponse
 	Book(optionID string) BookResponse
 }
