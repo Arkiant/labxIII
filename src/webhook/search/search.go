@@ -61,7 +61,26 @@ func (s *SearchService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
 		return pkg.SearchResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
 	}
 
-	return searchRS
+	log.Debug("Send quote with id: " + searchRS.OptionID)
+	quoteRS, err := s.transactioner.Quote(
+		transaction.QuoteRequest{
+			OptionRefId: searchRS.OptionID,
+		},
+	)
+	if err != nil {
+		log.Error(err.Error())
+		return pkg.SearchResponse{Response: pkg.Response{Errors: []pkg.Error{pkg.Error{Code: "101", Description: err.Error()}}}}
+	}
+
+	ret := pkg.SearchResponse{
+		Amount:     searchRS.Amount,
+		Currency:   searchRS.Currency,
+		HotelName:  searchRS.HotelName,
+		OptionID:   quoteRS,
+		Refundable: true,
+	}
+
+	return ret
 }
 
 func (s *SearchService) getRequest(bodyRQ io.Reader) (pkg.Criteria, error) {
