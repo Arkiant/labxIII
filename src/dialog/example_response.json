@@ -1,0 +1,22 @@
+{
+    "fulfillmentText": "Para tu solicitud he encontrado el Hotel Prueba a 100 euros",
+    "outputContexts": [
+    {
+      "name": "projects/hotelx-pjaswu/agent/sessions/55e8f133-bac9-542a-48e3-5574d9b30093/contexts/book",
+      "lifespanCount": 5,
+      "parameters": {
+          "pax.original": "2",
+          "checkOut": "2019-12-03T12:00:00+01:00",
+          "checkOut.original": "día 3 de diciembre",
+          "checkIn.original": "2 de diciembre",
+          "checkIn": "2019-12-02T12:00:00+01:00",
+          "destination": "Madrid",
+          "pax": 2,
+          "destination.original": "Madrid",
+          "hotelName":"Hotel Prueba",
+          "price":"100 euros",
+          "optionID":1234566
+      }
+    }
+  ]
+}
