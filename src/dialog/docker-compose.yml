@@ -5,11 +5,11 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.port=8080"
+      - "traefik.port=6969"
       - "traefik.http.routers.dialog.rule=Host(`labx.travelgatex.com`)"
       - "traefik.http.routers.dialogservice=dialog"
-      - "traefik.http.services.dialog.loadbalancer.server.port=8080"
-      - "traefik.http.routers.dialog.entrypoints=http"
+      - "traefik.http.services.dialog.loadbalancer.server.port=6969"
+      - "traefik.http.routers.dialog.entrypoints=proto"
     networks:
       - internet
 networks:
