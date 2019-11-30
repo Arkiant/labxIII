@@ -1,11 +1,12 @@
 package webhook
 
 import (
-	"github.com/OoXoSoO/labxIII/src/webhook/book"
-	"github.com/OoXoSoO/labxIII/src/webhook/search"
 	"log"
 	"net/http"
 	"os"
+
+	"labxIII/src/webhook/book"
+	"labxIII/src/webhook/search"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
