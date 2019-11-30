@@ -31,6 +31,7 @@ jobs:
 
     - name: Docker Hub 
       uses: manusa/actions-publish-docker@master
+      working-directory: ${{ env.WORKING_DIRECTORY }}
       with:
         name: ${{ env.REGISTRY_NAME }}/${{ env.REGISTRY_BUILD_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }} 
