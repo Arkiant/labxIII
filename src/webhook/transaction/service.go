@@ -40,6 +40,56 @@ type SearchResponse struct {
 }
 
 type BookCriteria struct {
+	Input    Input    `json:"input"`
+	Settings Settings `json:"settings"`
+}
+type DeltaPrice struct {
+	Amount    int  `json:"amount"`
+	Percent   int  `json:"percent"`
+	ApplyBoth bool `json:"applyBoth"`
+}
+type Holder struct {
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+}
+type Paxes struct {
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Age     int    `json:"age"`
+}
+type Rooms struct {
+	OccupancyRefID int     `json:"occupancyRefId"`
+	Paxes          []Paxes `json:"paxes"`
+}
+type Input struct {
+	OptionRefID     string     `json:"optionRefId"`
+	ClientReference string     `json:"clientReference"`
+	DeltaPrice      DeltaPrice `json:"deltaPrice"`
+	Holder          Holder     `json:"holder"`
+	Rooms           []Rooms    `json:"rooms"`
+}
+type Parameters struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+type PluginsType struct {
+	Type       string       `json:"type"`
+	Name       string       `json:"name"`
+	Parameters []Parameters `json:"parameters"`
+}
+type Plugins struct {
+	Step        string        `json:"step"`
+	PluginsType []PluginsType `json:"pluginsType"`
+}
+type Settings struct {
+	Context           string  `json:"context"`
+	Client            string  `json:"client"`
+	AuditTransactions bool    `json:"auditTransactions"`
+	TestMode          bool    `json:"testMode"`
+	Plugins           Plugins `json:"plugins"`
+}
+
+type BookResponse struct {
 	CancelPolicy BookCancelPolicy `json:"cancelPolicy"`
 	Price        BookPrice        `json:"price"`
 	Status       string           `json:"status"`
