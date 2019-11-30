@@ -3,7 +3,10 @@
 ##################################
 
 FROM alpine:3.6
-WORKDIR /app
-RUN apk update && apk add curl
+WORKDIR /webhook
+
+# copy local "service" binary to docker.
+COPY service .
+
 EXPOSE 8080
-CMD ["sh", "/app/service"]
+CMD ["sh", "/webhook/service"]

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"labxIII/src/webhook/book"
-	"labxIII/src/webhook/search"
+	"github.com/Arkiant/labxIII/src/webhook/book"
+	"github.com/Arkiant/labxIII/src/webhook/search"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
