@@ -20,4 +20,4 @@ jobs:
     - name: Test
       run: go test ./... -v
     - name: Build
-      run: CGO_ENABLED=0 GOOS=linux go build -a
+      run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
