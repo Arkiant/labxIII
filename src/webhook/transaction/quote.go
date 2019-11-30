@@ -11,6 +11,11 @@ import (
 
 func (s *ServiceClient) Quote(c QuoteRequest) (string, error) {
 
+	//ValidateRequest
+	if c.OptionRefId == "" {
+		return "", fmt.Errorf("Error params")
+	}
+
 	//buildRequest
 	requestString := fmt.Sprintf(`{
 		"query": "query ($criteriaQuote: HotelCriteriaQuoteInput!, $settings: HotelSettingsInput) {\n  hotelX {\n    quote(criteria: $criteriaQuote, settings: $settings) {\n      optionQuote {\n        optionRefId\n        status\n      }\n      errors {\n        code\n        type\n        description\n      }\n      warnings {\n        code\n        type\n        description\n      }\n    }\n  }\n}\n",
