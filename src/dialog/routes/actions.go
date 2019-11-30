@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -68,15 +69,39 @@ func RequestHandler(w http.ResponseWriter, r *http.Request) {
 			criteria.Destination = values["destination"].Data().(string)
 			criteria.NumPaxes = int(values["pax"].Data().(float64))
 
+			d, err := json.Marshal(criteria)
+			println(string(d))
+			if err != nil {
+				panic(err)
+			}
+
+			r, err := http.Post("http://labx.travelgatex.com:80/search", "application/json", bytes.NewBuffer(d))
+
+			if err != nil {
+				panic(err)
+			}
+			d, err = ioutil.ReadAll(r.Body)
+			if err != nil {
+				panic(err)
+			}
+
+			println(string(d))
+			var rs pkg.SearchResponse
+			err = json.Unmarshal(d, &rs)
+			if err != nil {
+				panic(err)
+			}
 			var response SearchResponse
+
 			var outputContext OutputContext
 
-			response.FulfillmentText = "Para " + criteria.Destination + " tenemos un puti a 100 euros"
+			amountEuros := fmt.Sprintf("%v", rs.Amount)
+			response.FulfillmentText = "Para " + criteria.Destination + " tenemos un " + rs.HotelName + " a " + amountEuros + " euros"
 			outputContext.Name = "projects/hotelx-pjaswu/agent/sessions/55e8f133-bac9-542a-48e3-5574d9b30093/contexts/book"
 			outputContext.LifespanCount = 5
-			outputContext.Parameters.HotelName = "Hotel Prueba"
-			outputContext.Parameters.Price = "100 euros"
-			outputContext.Parameters.OptionID = 12345
+			outputContext.Parameters.HotelName = rs.HotelName
+			outputContext.Parameters.Price = amountEuros
+			outputContext.Parameters.OptionID = rs.OptionID
 
 			response.OutputContexts = append(response.OutputContexts, outputContext)
 

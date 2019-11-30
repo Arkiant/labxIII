@@ -12,6 +12,6 @@ type OutputContext struct {
 	Parameters    struct {
 		HotelName string `json:"hotelName"`
 		Price     string `json:"price"`
-		OptionID  int    `json:"optionID"`
+		OptionID  string `json:"optionID"`
 	} `json:"parameters"`
 }
