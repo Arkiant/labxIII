@@ -37,3 +37,4 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
         snapshot: true  
         workdir: ${{ env.WORKING_DIRECTORY }}
+        context: latest
