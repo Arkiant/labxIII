@@ -1,10 +1,8 @@
 package transaction
 
-import (
-	"github.com/Arkiant/labxIII/src/webhook/pkg"
-)
+import ()
 
-func (s *ServiceClient) Search(c pkg.Criteria) pkg.SearchResponse {
+func (s *ServiceClient) Search(c SearchCriteria) (SearchResponse, error) {
 
 	//ValidateRequest
 
@@ -16,5 +14,5 @@ func (s *ServiceClient) Search(c pkg.Criteria) pkg.SearchResponse {
 
 	//errors control
 
-	return pkg.SearchResponse{}
+	return SearchResponse{Amount: 100, Currency: "EUR", HotelName: "QueDiseResorts", OptionID: "uno", Refundable: true}, nil
 }

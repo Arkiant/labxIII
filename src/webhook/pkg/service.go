@@ -7,14 +7,13 @@ type Criteria struct {
 	NumPaxes    int
 }
 
-type DestinationSearcherCriteria struct {
-	Text    string
-	Access  string
-	MaxSize int
-}
 
 type Response struct {
-	Errors []error
+	Errors []Error
+}
+type Error struct {
+	Code string
+	Description string
 }
 
 type DestinationSearcherResponse struct {
