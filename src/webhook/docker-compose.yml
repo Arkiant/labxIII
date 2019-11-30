@@ -1,0 +1,19 @@
+version: '3'
+services:
+  webhook:
+    image: acrlabx.azurecr.io/labxwebhook:latest
+    restart: always
+    env_file:
+      - env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.http.routers.webhook.rule=Host(`labx.travelgatex.com`)"
+      - "traefik.http.routers.webhookservice=webhook"
+      - "traefik.http.services.webhook.loadbalancer.server.port=8080"
+      - "traefik.http.routers.webhook.entrypoints=http"
+    networks:
+      - internet
+networks:
+  internet:
+    external: true

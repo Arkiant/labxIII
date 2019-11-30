@@ -8,5 +8,7 @@ WORKDIR /webhook
 # copy local "service" binary to docker.
 COPY service .
 
+ENV apikey ""
+
 EXPOSE 8080
-CMD ["sh", "/webhook/service"]
+CMD ["sh", "-c", "/webhook/service --auth=\"Apikey ${apikey}\""]

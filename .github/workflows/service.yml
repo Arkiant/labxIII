@@ -3,15 +3,16 @@ name: CI
 on: [push, pull_request]
 
 env:
-  REGISTRY_NAME: labxhx
+  REGISTRY_NAME: acrlabx
   REGISTRY_BUILD_NAME: labxwebhook
   WORKING_DIRECTORY: ./src/webhook/
+  NAMESPACE: kube-system
 
 jobs:
   test:
     strategy:
       matrix: 
-        go-version: [1.12, 1.13]
+        go-version: [1.13]
         platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
@@ -19,7 +20,7 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go-version }}
-    - name: Chackout code
+    - name: Checkout code
       uses: actions/checkout@v1
     - name: Test
       run: go test ./... -v
@@ -27,7 +28,6 @@ jobs:
       working-directory: ${{ env.WORKING_DIRECTORY }}
       run: CGO_ENABLED=0 GOOS=linux go build -a -o service .
 
-    # Docker build and publish
     - name: Docker set registry configuration 
       uses: azure/docker-login@v1
       with:
@@ -35,6 +35,7 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
+    # Docker build and publish
     - name: Docker build and publish
       working-directory: ${{ env.WORKING_DIRECTORY }}
       run: |
@@ -42,3 +43,36 @@ jobs:
         docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
         docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:latest
         docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:latest
+
+      # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Connect to Azure
+      uses: azure/aks-set-context@v1
+      with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          resource-group: 'LabX'
+          cluster-name: 'AKSHotelX'
+    
+    # Create namespace if doesn't exist
+    - name: Create k8s namespace if doesn't exist
+      run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+    
+    - name: Create imagepullsecret for azurecr.io
+      uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
+    
+    - name: Deploy app to Azure k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          manifests/k8s_labxwebhook.yaml
+        images: |
+          ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:latest
+        imagepullsecrets: |
+          ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
