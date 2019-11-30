@@ -14,8 +14,8 @@ spec:
       labels:
         app: azure-hotelx-flow
     spec:
-      nodeSelector:
-        "bakshotelx-labx-7bfa6d-32a812e2.hcp.westeurope.azmk8s.io/nodepool1 ": linux
+      nodeSelector: 
+        "bakshotelx-labx-7bfa6d-32a812e2.hcp.westeurope.azmk8s.io/nodepool1": linux
       containers:
       - name: azure-hotelx-flow
         image: acrlabx.azurecr.io/labxwebhook:latest
