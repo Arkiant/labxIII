@@ -50,7 +50,7 @@ jobs:
       with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           resource-group: 'LabX'
-          cluster-name: '${{ secrets.AZURE_CLUSTER_NAME }}'
+          cluster-name: 'AKSHotelX'
     
     # Create namespace if doesn't exist
     - run: |
