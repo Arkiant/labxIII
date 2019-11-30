@@ -1,8 +1,9 @@
 name: CI
 
-on: [pull_request]
-branches:
-  - master
+on: 
+  pull_request:
+    branches:
+      - master
 env:
   REGISTRY_NAME: arkiant
   REGISTRY_BUILD_NAME: labxwebhook
