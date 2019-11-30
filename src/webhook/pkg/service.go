@@ -11,7 +11,7 @@ type Response struct {
 	Errors []error
 }
 
-type SearchRespone struct {
+type SearchResponse struct {
 	Response
 	OptionID   string
 	HotelName  string
@@ -26,6 +26,6 @@ type BookResponse struct {
 }
 
 type Service interface {
-	Search(input Criteria) SearchRespone
+	Search(input Criteria) SearchResponse
 	Book(optionID string) BookResponse
 }
