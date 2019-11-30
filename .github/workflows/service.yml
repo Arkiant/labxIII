@@ -72,7 +72,7 @@ jobs:
         manifests: |
           manifests/k8s_labxwebhook.yaml
         images: |
-          ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:${{ github.sha }}
+          ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.REGISTRY_BUILD_NAME }}:latest
         imagepullsecrets: |
           ${{ env.REGISTRY_NAME }}-registry-connection
         namespace: ${{ env.NAMESPACE }}

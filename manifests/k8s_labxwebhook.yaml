@@ -1,19 +1,39 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: azure-hotelx-flow-deployment
+  name: azure-hotelx-flow
 spec:
-  selector:
-    matchLabels:
-      app: azure-hotelx-flow
-  replicas: 2 # indica al controlador que ejecute 2 pods
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
   template:
     metadata:
       labels:
         app: azure-hotelx-flow
     spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
       containers:
       - name: azure-hotelx-flow
         image: acrlabx.azurecr.io/labxwebhook:latest
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-hotelx-flow
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: azure-hotelx-flow
