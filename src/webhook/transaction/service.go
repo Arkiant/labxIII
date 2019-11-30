@@ -44,6 +44,16 @@ type Service interface {
 	DestinationSearcher(DestinationSearcherCriteria) (string, error)
 }
 
+struct QuoteRequest{
+	optionRefId	string `json:"optionRefId"`
+}
+
+struct QuoteResponse {
+	optionRefId string  `json:"optionRefId"`
+	status string		`json:"status"`
+	errors error		`json:"errors"`
+}
+
 var _ Service = (*ServiceClient)(nil)
 
 type ServiceClient struct {
