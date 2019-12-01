@@ -1,10 +1,4 @@
-package routes
-
-type SearchResponse struct {
-	FulfillmentText string `json:"fulfillmentText"`
-
-	OutputContexts []OutputContext `json:"outputContexts"`
-}
+package dialogflow
 
 type OutputContext struct {
 	Name          string `json:"name"`

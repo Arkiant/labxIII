@@ -1,11 +1,10 @@
 package pkg
 
-type Criteria struct {
-	Checkin     Date
-	ChecOut     Date
-	Destination string
-	NumPaxes    int
-}
+import (
+	"github.com/Arkiant/labxIII/src/conversation"
+	"github.com/Arkiant/labxIII/src/hotelx"
+)
+
 type BookRQ struct {
 	OptionID string
 }
@@ -19,26 +18,20 @@ type Error struct {
 }
 
 type DestinationSearcherResponse struct {
-	Code      string
-	Available bool
+	hotelx.Destination
 }
 
 type SearchResponse struct {
 	Response
-	OptionID   string
-	HotelName  string
-	Amount     float32
-	Currency   string
-	Refundable bool
+	hotelx.Search
 }
 
 type BookResponse struct {
 	Response
-	BookingID string
-	Status    string
+	hotelx.Book
 }
 
 type Service interface {
-	Search(input Criteria) SearchResponse
+	Search(input conversation.Criteria) SearchResponse
 	Book(optionID string) BookResponse
 }
