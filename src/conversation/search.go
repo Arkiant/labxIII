@@ -7,7 +7,7 @@ import (
 // Criteria for search request
 type Criteria struct {
 	Checkin     date.Date
-	ChecOut     date.Date
+	CheckOut    date.Date
 	Destination string
 	NumPaxes    int
 }

@@ -7,7 +7,7 @@ import (
 
 type SearchCriteria struct {
 	CheckIn     date.Date `json:"checkIn"`
-	ChecOut     date.Date `json:"checkOut"`
+	CheckOut    date.Date `json:"checkOut"`
 	Destination string    `json:"destination"`
 	NumPaxes    int       `json:"numPaxes"`
 }

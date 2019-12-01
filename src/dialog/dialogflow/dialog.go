@@ -1,22 +1,25 @@
 package dialogflow
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"strings"
 
 	"github.com/Arkiant/labxIII/src/conversation"
 	"github.com/Arkiant/labxIII/src/kit/date"
 
-	"github.com/Arkiant/labxIII/src/dialog/internal"
-
 	"github.com/Jeffail/gabs"
 )
 
+const URL = "http://labx.travelgatex.com:80/search"
+
 type DialogFlow struct{}
 
-var _ internal.Dialog = DialogFlow{}
+var _ conversation.Dialog = DialogFlow{}
 
 func NewDialog() *DialogFlow {
 	return &DialogFlow{}
@@ -30,17 +33,56 @@ func (d DialogFlow) Convert(body io.ReadCloser) (*conversation.Criteria, error) 
 	}
 	intent := getIntent(container)
 	switch intent {
-	case internal.SEARCH:
+	case conversation.SEARCH:
 		params, err := getSearchParameters(container)
 		if err != nil {
 			return nil, err
 		}
 		return params, nil
-	case internal.BOOK:
+	case conversation.BOOK:
 		return nil, errors.New("not implemented")
 	default:
 		return nil, errors.New("not found intent")
 	}
+}
+
+func (d DialogFlow) Send(criteria *conversation.Criteria) (io.ReadCloser, error) {
+	c, err := json.Marshal(criteria)
+	if err != nil {
+		return nil, err
+	}
+	res, err := http.Post(URL, "application/json", bytes.NewBuffer(c))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.Body, nil
+}
+
+func (d DialogFlow) Speak(destination string, hotelName string, amount string, optionID string) ([]byte, error) {
+
+	outputContext := OutputContext{
+		Name:          "projects/hotelx-pjaswu/agent/sessions/55e8f133-bac9-542a-48e3-5574d9b30093/contexts/book",
+		LifespanCount: 5,
+		Parameters: Parameters{
+			HotelName: hotelName,
+			Price:     amount,
+			OptionID:  optionID,
+		},
+	}
+
+	response := SearchResponse{
+		FulfillmentText: "Para " + destination + " tenemos un " + hotelName + " a " + amount + " euros",
+	}
+
+	response.OutputContexts = append(response.OutputContexts, outputContext)
+
+	res, err := json.Marshal(response)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func parse(body io.ReadCloser) (*gabs.Container, error) {
@@ -58,12 +100,12 @@ func parse(body io.ReadCloser) (*gabs.Container, error) {
 	return res, nil
 }
 
-func getIntent(container *gabs.Container) internal.Intent {
+func getIntent(container *gabs.Container) conversation.Intent {
 
 	dName, ok := container.Path("queryResult.intent.displayName").Data().(string)
 
 	if ok {
-		return internal.Intent(dName)
+		return conversation.Intent(dName)
 	}
 
 	return ""
@@ -88,7 +130,7 @@ func getSearchParameters(jsonParsed *gabs.Container) (*conversation.Criteria, er
 
 	criteria := conversation.Criteria{
 		Checkin:     checkIn,
-		ChecOut:     checkOut,
+		CheckOut:    checkOut,
 		Destination: p["destination"].Data().(string),
 		NumPaxes:    p["pax"].Data().(int),
 	}

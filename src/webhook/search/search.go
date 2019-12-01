@@ -54,7 +54,7 @@ func (s *SearchService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
 	log.Debug("Send search with code: " + code)
 	searchRS, err := s.transactioner.Search(
 		transaction.SearchCriteria{
-			ChecOut:     s.rq.ChecOut,
+			CheckOut:    s.rq.CheckOut,
 			CheckIn:     s.rq.Checkin,
 			Destination: code,
 			NumPaxes:    s.rq.NumPaxes,

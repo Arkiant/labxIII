@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/Arkiant/labxIII/src/dialog/dialogflow"
 
@@ -12,6 +14,13 @@ import (
 )
 
 func main() {
+
+	const defaultPort = "6969"
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
 
 	r := chi.NewRouter()
 
@@ -24,5 +33,6 @@ func main() {
 
 	r.MethodFunc("POST", "/", s.RequestHandler)
 
-	http.ListenAndServe(":6969", r)
+	log.Printf("Running in port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }

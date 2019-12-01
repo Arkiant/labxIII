@@ -1,10 +1,7 @@
-package internal
+package conversation
 
 import (
 	"io"
-
-	"github.com/Arkiant/labxIII/src/conversation"
-	// TODO: Delete this dependency in internal package
 )
 
 // Intent represent a conversation intent
@@ -18,5 +15,7 @@ const (
 
 // Dialog is a interface represent a dialog API NLP
 type Dialog interface {
-	Convert(io.ReadCloser) (*conversation.Criteria, error)
+	Convert(io.ReadCloser) (*Criteria, error)
+	Send(criteria *Criteria) (io.ReadCloser, error)
+	Speak(destination string, hotelName string, amount string, optionID string) ([]byte, error)
 }
