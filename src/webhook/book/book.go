@@ -3,11 +3,13 @@ package book
 import (
 	"context"
 	"encoding/json"
+	"io"
+
+	"github.com/Arkiant/labxIII/src/hotelx"
 	"github.com/Arkiant/labxIII/src/webhook/pkg"
 	"github.com/Arkiant/labxIII/src/webhook/transaction"
 	"github.com/marstr/guid"
 	"github.com/travelgateX/go-io/log"
-	"io"
 )
 
 type BookFactory struct {
@@ -48,8 +50,10 @@ func (s *BookService) Run(ctx context.Context, bodyRQ io.Reader) interface{} {
 	}
 
 	ret := pkg.BookResponse{
-		BookingID: bookrefID,
-		Status:    BookRS.Status,
+		Book: hotelx.Book{
+			BookingID: bookrefID,
+			Status:    BookRS.Status,
+		},
 	}
 
 	return ret

@@ -1,14 +1,15 @@
 package transaction
 
-import ()
-import "github.com/Arkiant/labxIII/src/webhook/transaction/http"
-import "github.com/Arkiant/labxIII/src/webhook/pkg"
+import (
+	"github.com/Arkiant/labxIII/src/kit/date"
+	"github.com/Arkiant/labxIII/src/webhook/transaction/http"
+)
 
 type SearchCriteria struct {
-	CheckIn     pkg.Date `json:"checkIn"`
-	ChecOut     pkg.Date `json:"checkOut"`
-	Destination string   `json:"destination"`
-	NumPaxes    int      `json:"numPaxes"`
+	CheckIn     date.Date `json:"checkIn"`
+	CheckOut    date.Date `json:"checkOut"`
+	Destination string    `json:"destination"`
+	NumPaxes    int       `json:"numPaxes"`
 }
 
 type DestinationSearcherCriteria struct {

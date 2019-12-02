@@ -1,20 +1,38 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
+
+	"github.com/Arkiant/labxIII/src/dialog/dialogflow"
 
 	"github.com/Arkiant/labxIII/src/dialog/routes"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func main() {
-	r := routes.NewRoutes()
 
-	/*
-			err := http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/enimada.com/fullchain.pem", "/etc/letsencrypt/live/enimada.com/privkey.pem", r)
-		        if err != nil {
-		                panic(err)
-				}
-	*/
+	const defaultPort = "6969"
 
-	http.ListenAndServe(":6969", r)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+
+	r := chi.NewRouter()
+
+	r.Use(middleware.Logger)
+	r.Use(middleware.StripSlashes)
+	r.Use(middleware.Recoverer)
+
+	df := dialogflow.NewDialog()
+	s := routes.NewServer(df)
+
+	r.MethodFunc("POST", "/", s.RequestHandler)
+
+	log.Printf("Running in port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }

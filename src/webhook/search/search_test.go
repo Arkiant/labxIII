@@ -6,14 +6,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Arkiant/labxIII/src/webhook/pkg"
+	"github.com/Arkiant/labxIII/src/conversation"
 	"github.com/Arkiant/labxIII/src/webhook/transaction"
 )
 
 func TestSearchService_Run(t *testing.T) {
 	type fields struct {
 		transactioner transaction.Service
-		rq            pkg.Criteria
+		rq            conversation.Criteria
 	}
 	type args struct {
 		ctx    context.Context
