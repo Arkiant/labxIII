@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/Jeffail/gabs v1.4.0
-	github.com/go-chi/chi v4.0.2+incompatible
+	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/marstr/guid v1.1.0
 	github.com/onsi/gomega v1.7.1
 	github.com/stretchr/testify v1.4.0
